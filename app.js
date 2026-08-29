@@ -200,10 +200,39 @@ document.addEventListener('DOMContentLoaded', () => {
     bubble.textContent = text;
     chatMessages.appendChild(bubble);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    return bubble;
   }
 
-  function botSay(text) {
-    setTimeout(() => addBubble(text, 'bot'), 450);
+  // Indicador "escribiendo..." mientras llega la respuesta de la API
+  function showTyping() {
+    const typing = document.createElement('div');
+    typing.className = 'chat-bubble bot chat-typing';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    chatMessages.appendChild(typing);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return typing;
+  }
+
+  function botSay(text, { typed = true, delay = 350 } = {}) {
+    setTimeout(() => {
+      const bubble = addBubble('', 'bot');
+      if (!typed) {
+        bubble.textContent = text;
+        return;
+      }
+      // Efecto máquina de escribir (~120 ticks como máximo)
+      let i = 0;
+      const step = Math.max(1, Math.round(text.length / 120));
+      const timer = setInterval(() => {
+        i += step;
+        bubble.textContent = text.slice(0, i);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        if (i >= text.length) {
+          clearInterval(timer);
+          bubble.textContent = text;
+        }
+      }, 18);
+    }, delay);
   }
 
   // Keyword-based agent responses
@@ -276,12 +305,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function sendUser(text) {
     addBubble(text, 'user');
+    const typing = showTyping();
     const reply = await callAgent(text);
+    typing.remove();
     if (!reply) {
-      botSay(agentReply(text) + '\n\n⚠️ (Respuesta offline: la API del agente no está disponible. Revisa la consola del navegador para ver el detalle.)');
+      botSay(agentReply(text) + '\n\n⚠️ (Respuesta offline: la API del agente no está disponible. Revisa la consola del navegador para ver el detalle.)', { typed: false });
       return;
     }
-    botSay(reply);
+    botSay(reply, { delay: 150 });
   }
 
   function handleSend() {

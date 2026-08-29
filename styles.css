@@ -1338,6 +1338,7 @@ h6 {
   border-radius: 16px;
   font-size: 1.15rem;
   line-height: 1.5;
+  white-space: pre-line;
 }
 
 .chat-bubble.bot {
@@ -1353,6 +1354,31 @@ h6 {
   color: var(--text-dark);
   border-bottom-right-radius: 4px;
   align-self: flex-end;
+}
+
+/* Indicador "escribiendo..." del Agente Phy */
+.chat-bubble.chat-typing {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 14px 18px;
+}
+
+.chat-typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  opacity: 0.3;
+  animation: chatBlink 1.2s infinite ease-in-out;
+}
+
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes chatBlink {
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
 }
 
 .chat-quick {
