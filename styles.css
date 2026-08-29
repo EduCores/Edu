@@ -1194,15 +1194,15 @@ h6 {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 60px;
-  height: 60px;
+  width: 66px;
+  height: 66px;
   background: #25d366;
   color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
   box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
   z-index: 9999;
   transition: transform var(--transition-fast);
@@ -1215,10 +1215,10 @@ h6 {
 /* Floating Chat Agent Button */
 .chat-float {
   position: fixed;
-  bottom: 105px;
+  bottom: 112px;
   right: 30px;
-  width: 60px;
-  height: 60px;
+  width: 66px;
+  height: 66px;
   background: var(--accent-yellow);
   color: var(--text-dark);
   border: none;
@@ -1226,7 +1226,7 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.7rem;
+  font-size: 1.9rem;
   cursor: pointer;
   box-shadow: 0 10px 25px var(--accent-yellow-glow);
   z-index: 9999;
@@ -1240,7 +1240,7 @@ h6 {
 /* Chat Widget */
 .chat-widget {
   position: fixed;
-  bottom: 105px;
+  bottom: 128px;
   right: 30px;
   width: 370px;
   max-width: calc(100vw - 40px);
@@ -1456,12 +1456,24 @@ h6 {
   .chat-widget {
     right: 10px;
     width: calc(100vw - 20px);
-    bottom: 100px;
-    max-height: calc(100dvh - 120px);
+    bottom: 168px;
+    max-height: calc(100dvh - 190px);
   }
 
   .chat-float {
     right: 10px;
+    bottom: 94px;
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+  }
+
+  .whatsapp-float {
+    right: 10px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
   }
 
   .chat-header {
