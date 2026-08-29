@@ -861,6 +861,7 @@ h6 {
 .member-avatar {
   width: 150px;
   height: 150px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1687,6 +1688,45 @@ h6 {
     .planes-grid,
     .team-grid {
       grid-template-columns: 1fr;
+    }
+
+    /* Member cards (Eduardo & Aarón): centrados y a ancho completo en móvil */
+    .member-card {
+      padding: 32px 20px;
+      gap: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .member-card > * {
+      width: 100%;
+    }
+
+    .member-avatar {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-bottom: 0;
+    }
+
+    .member-card .founder-title-badge {
+      font-size: 1.1rem;
+      padding: 5px 12px;
+      white-space: normal;
+      line-height: 1.4;
+    }
+
+    .member-card h3 {
+      font-size: 1.9rem;
+    }
+
+    .member-card .founder-subtitle {
+      font-size: 1.2rem;
+    }
+
+    .member-card .founder-bio {
+      text-align: center;
     }
 
     .footer-grid {
