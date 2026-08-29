@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chatWidget.setAttribute('aria-hidden', 'false');
     if (!chatMessages.dataset.started) {
       chatMessages.dataset.started = '1';
-      botSay('¡Hola! Soy el Agente Phy 🤖 vamos a revolucionar tu negocio: e-commerce Next.js, automatización con IA en n8n, performance y IoT. ¿En qué puedo ayudarte?');
+      botSay('¡Hola! Soy el Agente Phy 🤖 vamos a revolucionar tu negocio: e-commerce Next.js, automatización agéntica, performance y IoT. ¿En qué puedo ayudarte?');
     }
     chatInput.focus();
   }
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return 'Armamos tu tienda en Next.js ultrarrápida con stock híbrido (caché Prisma), ERP en tiempo real y doble pasarela: Webpay Plus y MercadoPago. ¿Ya tienes un e-commerce o partimos de cero?';
     }
     if (/(automat|robot|n8n|agente|ia|whatsapp|carrito|recuper|flujo|crm)/.test(m)) {
-      return 'Con n8n creamos flujos autónomos y agentes conversacionales RAG para WhatsApp/Instagram que recuperan carritos abandonados y sincronizan stock y CRM solos. ¿Quieres recuperar carritos o atender clientes 24/7?';
+      return 'Con automatización agéntica creamos flujos autónomos y agentes conversacionales RAG para WhatsApp/Instagram que recuperan carritos abandonados y sincronizan stock y CRM solos. ¿Quieres recuperar carritos o atender clientes 24/7?';
     }
     if (/(iot|domot|sensor|fisic|local|tienda fisica|espacio|tabler|electric|telemetr)/.test(m)) {
       return 'Conectamos tu espacio físico: tableros eléctricos inteligentes, sensores IoT y telemetría en tiempo real que se enlazan con tu e-commerce. ¿Tienes un local o bodega que quieras digitalizar?';
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (/(contacto|hablar|agendar|reunion|reunión|diagnostico|diagnóstico|humano)/.test(m)) {
       return 'Claro, agendamos un diagnóstico phygital sin costo. Escríbenos por WhatsApp 👉 https://wa.me/56941539918 o déjanos tus datos en el formulario de contacto.';
     }
-    return 'Entendido. Puedo ayudarte con: (1) tienda Next.js, (2) automatización con IA en n8n, (3) performance y Meta CAPI, (4) IoT y domótica, o (5) contenido GenAI. ¿Por cuál vamos?';
+    return 'Entendido. Puedo ayudarte con: (1) tienda Next.js, (2) automatización agéntica, (3) performance y Meta CAPI, (4) IoT y domótica, o (5) contenido GenAI. ¿Por cuál vamos?';
   }
 
   // === Agente conectado vía serverless function de Vercel (/api/chat) ===
