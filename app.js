@@ -181,7 +181,21 @@ document.addEventListener('DOMContentLoaded', () => {
       chatMessages.dataset.started = '1';
       botSay('¡Hola! Soy el Agente Phy 🤖 vamos a revolucionar tu negocio: e-commerce Next.js, automatización agéntica, performance y IoT. ¿En qué puedo ayudarte?');
     }
+    notifyOwnerOnline();
     chatInput.focus();
+  }
+
+  // Avisa por WhatsApp al dueño que hay un cliente en línea (1 vez por sesión)
+  function notifyOwnerOnline() {
+    try {
+      if (sessionStorage.getItem('phyClientOnlineNotified')) return;
+      sessionStorage.setItem('phyClientOnlineNotified', '1');
+      fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event: 'cliente_en_linea', page: location.href })
+      }).catch(() => {});
+    } catch (e) { /* sessionStorage no disponible: no interrumpe el chat */ }
   }
 
   function closeChat() {
