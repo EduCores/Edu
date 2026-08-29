@@ -1,0 +1,82 @@
+{
+  "name": "Chat Phygital Agent (Gemini 2.5 Flash)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat-phygital",
+        "responseMode": "onReceived"
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [400, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const req = $input.first().json;\nconst SYSTEM = 'Eres el Agente Phy de la agencia Phygital, especializada en infraestructura phygital: e-commerce Next.js con stock híbrido Prisma, automatización con IA en n8n, agentes RAG para WhatsApp/Instagram, performance con Meta CAPI server-side y IoT/domótica. Responde en español, de forma cercana y conversacional, en máximo 3 frases. Si el usuario quiere contacto real, deriva al WhatsApp https://wa.me/56941539918 o al formulario del sitio.';\nconst history = Array.isArray(req.history) ? req.history.map(h => ({\n  role: h.role === 'model' ? 'model' : 'user',\n  parts: [{ text: String(h.text || '') }]\n})) : [];\nconst contents = [...history, { role: 'user', parts: [{ text: String(req.message || '') }] }];\nreturn [{ json: { systemInstruction: { parts: [{ text: SYSTEM }] }, contents } }];"
+      },
+      "id": "build",
+      "name": "Build Gemini Body",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 400]
+    },
+    {
+      "parameters": {
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={{ $env.GEMINI_API_KEY }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Content-Type", "value": "application/json" }]
+        },
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "http",
+      "name": "Gemini 2.5 Flash",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst text = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No pude generar una respuesta.';\nreturn [{ json: { reply: text.trim() } }];"
+      },
+      "id": "extract",
+      "name": "Extract Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.reply }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1360, 400]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Build Gemini Body", "type": "main", "index": 0 }]]
+    },
+    "Build Gemini Body": {
+      "main": [[{ "node": "Gemini 2.5 Flash", "type": "main", "index": 0 }]]
+    },
+    "Gemini 2.5 Flash": {
+      "main": [[{ "node": "Extract Reply", "type": "main", "index": 0 }]]
+    },
+    "Extract Reply": {
+      "main": [[{ "node": "Respond to Webhook", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {},
+  "version": 1
+}

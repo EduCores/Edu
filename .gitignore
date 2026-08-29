@@ -1,0 +1,9 @@
+# Metadata de herramientas locales
+.codegraph/
+
+# Sistema operativo
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
