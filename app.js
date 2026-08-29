@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .join(', ') || 'No especificada';
       const message = document.getElementById('formMessage').value.trim() || 'Sin mensaje adicional';
 
-      const whatsappText = `Hola Phygital! Mi nombre es ${name} (${email}).
+      const whatsappText = `Hola Agencia PHY! Mi nombre es ${name} (${email}).
 Marca: ${brand}
 Servicio de interés: ${service}
 Mensaje: ${message}`;
