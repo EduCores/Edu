@@ -1456,24 +1456,24 @@ h6 {
   .chat-widget {
     right: 10px;
     width: calc(100vw - 20px);
-    bottom: 184px;
-    max-height: calc(100dvh - 206px);
+    bottom: 202px;
+    max-height: calc(100dvh - 224px);
   }
 
   .chat-float {
-    right: 10px;
-    bottom: 104px;
-    width: 70px;
-    height: 70px;
-    font-size: 2.1rem;
+    right: 8px;
+    bottom: 112px;
+    width: 80px;
+    height: 80px;
+    font-size: 2.4rem;
   }
 
   .whatsapp-float {
-    right: 10px;
+    right: 8px;
     bottom: 20px;
-    width: 70px;
-    height: 70px;
-    font-size: 2.3rem;
+    width: 80px;
+    height: 80px;
+    font-size: 2.6rem;
   }
 
   .chat-header {
