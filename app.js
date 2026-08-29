@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chatWidget.setAttribute('aria-hidden', 'false');
     if (!chatMessages.dataset.started) {
       chatMessages.dataset.started = '1';
-      botSay('¡Hola! Soy el Agente Phy vamos a revolucionar tu negocio: e-commerce Next.js, automatización agéntica, performance y IoT. ¿En qué puedo ayudarte?');
+      botSay('¡Hola! Soy el Agente Phy ¡Vamos a revolucionar tu negocio! ¿En qué te puedo ayudar?');
     }
     notifyOwnerOnline();
     chatInput.focus();
