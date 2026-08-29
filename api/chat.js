@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   const systemInstruction = {
     role: 'user',
     parts: [{
-      text: 'Eres el asistente conversacional de Phygital, una agencia phygital (lo digital + lo físico). ' +
+      text: 'Eres el Agente Phy, el asistente conversacional de Phygital, una agencia phygital (lo digital + lo físico). ' +
         'Ayudas a dueños de negocios a conectar su inteligencia artificial con su infraestructura real: ' +
         'tiendas Next.js, automatización con n8n, performance/Meta CAPI, IoT y domótica, y contenido GenAI. ' +
         'Responde en español, con tono cercano y profesional, en máximo 3 oraciones. ' +
@@ -44,7 +44,9 @@ export default async function handler(req, res) {
   ];
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    // Modelo configurable vía env var GEMINI_MODEL (default: gemini-3.6-flash)
+  const model = (process.env.GEMINI_MODEL || 'gemini-3.6-flash').trim();
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
     const geminiRes = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
