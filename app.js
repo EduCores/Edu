@@ -128,7 +128,7 @@ Marca: ${brand}
 Servicio de interés: ${service}
 Mensaje: ${message}`;
 
-      const encodedUrl = `https://wa.me/56941539918?text=${encodeURIComponent(whatsappText)}`;
+      const encodedUrl = `https://wa.me/56937479835?text=${encodeURIComponent(whatsappText)}`;
       
       // Open WhatsApp in new tab
       window.open(encodedUrl, '_blank');
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return '¡A tus órdenes! Cuando quieras agendamos un diagnóstico phygital gratuito. ¿Seguimos por acá o prefieres WhatsApp?';
     }
     if (/(contacto|hablar|agendar|reunion|reunión|diagnostico|diagnóstico|humano)/.test(m)) {
-      return 'Claro, agendamos un diagnóstico phygital sin costo. Escríbenos por WhatsApp 👉 https://wa.me/56941539918 o déjanos tus datos en el formulario de contacto.';
+      return 'Claro, agendamos un diagnóstico phygital sin costo. Escríbenos por WhatsApp 👉 https://wa.me/56937479835 o déjanos tus datos en el formulario de contacto.';
     }
     return 'Entendido. Puedo ayudarte con: (1) tienda Next.js, (2) automatización agéntica, (3) performance y Meta CAPI, (4) IoT y domótica, o (5) contenido GenAI. ¿Por cuál vamos?';
   }

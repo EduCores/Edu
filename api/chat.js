@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         'tiendas Next.js, automatización, performance/Meta CAPI, IoT y domótica, y contenido GenAI. ' +
         'Responde en español, de forma cercana y conversacional, de manera breve y concisa, el proposito es guiar a nuestro cliente y encontrar la mejor solución y con cierre natural. ' +
         'Si preguntan por precios o planes, menciona los 3 tiers (Ecosistema Digital, Ecosistema Phygital y Phygital Enterprise) ' +
-        'y deriva a WhatsApp https://wa.me/56941539918 o al formulario de contacto. ' +
+        'y deriva a WhatsApp https://wa.me/56937479835 o al formulario de contacto. ' +
         'No inventes precios exactos; invita a agendar un diagnóstico phygital gratuito.'
     }]
   };
