@@ -1456,24 +1456,24 @@ h6 {
   .chat-widget {
     right: 10px;
     width: calc(100vw - 20px);
-    bottom: 168px;
-    max-height: calc(100dvh - 190px);
+    bottom: 184px;
+    max-height: calc(100dvh - 206px);
   }
 
   .chat-float {
     right: 10px;
-    bottom: 94px;
-    width: 60px;
-    height: 60px;
-    font-size: 1.8rem;
+    bottom: 104px;
+    width: 70px;
+    height: 70px;
+    font-size: 2.1rem;
   }
 
   .whatsapp-float {
     right: 10px;
     bottom: 20px;
-    width: 60px;
-    height: 60px;
-    font-size: 2rem;
+    width: 70px;
+    height: 70px;
+    font-size: 2.3rem;
   }
 
   .chat-header {
@@ -1501,12 +1501,12 @@ h6 {
 
   .chat-quick {
     padding: 0 12px 10px 12px;
-    gap: 6px;
+    gap: 8px;
   }
 
   .chat-chip {
-    font-size: 0.95rem;
-    padding: 6px 12px;
+    font-size: 1.05rem;
+    padding: 10px 15px;
   }
 
   .chat-input-row {
@@ -1520,8 +1520,8 @@ h6 {
   }
 
   .chat-send {
-    width: 46px;
-    min-height: 44px;
+    width: 52px;
+    min-height: 48px;
   }
 }
 
@@ -1888,12 +1888,12 @@ h6 {
 
     /* Logo más compacto en móvil pequeño */
     .logo {
-      font-size: 1.9rem;
+      font-size: 2.9rem;
       gap: 8px;
     }
 
     .logo-badge {
-      font-size: 1.2rem;
+      font-size: 2.4rem;
       padding: 2px 7px;
     }
 
