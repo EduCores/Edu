@@ -22,18 +22,61 @@ export default async function handler(req, res) {
 
   if (!message) { res.status(400).json({ error: 'Mensaje vacío' }); return; }
 
+  // === Diagnóstico de sitios: si el mensaje incluye un link, descargamos y extraemos su contenido ===
+  const urlMatch = message.match(/https?:\/\/[^\s"'<>)]+/i);
+  let siteContext = '';
+  if (urlMatch) {
+    try {
+      const ctrl = new AbortController();
+      const timeout = setTimeout(() => ctrl.abort(), 8000);
+      const pageRes = await fetch(urlMatch[0], {
+        signal: ctrl.signal,
+        redirect: 'follow',
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PhygitalAudit/1.0)' }
+      });
+      clearTimeout(timeout);
+      const ctype = (pageRes.headers.get('content-type') || '').toLowerCase();
+      if (ctype.includes('html')) {
+        const html = (await pageRes.text()).slice(0, 400000);
+        const clean = (s) => s.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        const title = clean((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || '');
+        const desc = clean((html.match(/<meta[^>]+name=["']description["'][^>]*content=["']([^"']*)["']/i) || [])[1] || '');
+        const h1 = clean((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || '');
+        const text = html
+          .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+          .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+          .replace(/<[^>]+>/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 6000);
+        siteContext = `URL: ${urlMatch[0]}\nTítulo: ${title}\nMeta description: ${desc}\nH1 principal: ${h1}\nTexto visible (recorte): ${text}`;
+      } else {
+        siteContext = `El sitio respondió con content-type "${ctype || 'desconocido'}": no es una página HTML analizable.`;
+      }
+    } catch (e) {
+      siteContext = 'No se pudo acceder al sitio desde el servidor (bloqueo, timeout o caída).';
+    }
+  }
+
+  const systemText = 'Eres el Agente Phy, asistente de la agencia Phygital: conectamos lo digital con lo físico ' +
+    '(tiendas Next.js, automatización agéntica, performance/Meta CAPI, IoT y domótica, contenido GenAI). ' +
+    'REGLA PRINCIPAL (innegociable): responde SIEMPRE en español con MÁXIMO 2 oraciones cortas, ' +
+    'sin superar 40 palabras en total. Cero relleno, cero introducciones, cero resúmenes finales. ' +
+    'Prohibido usar listas, viñetas, encabezados o varios párrafos: solo un bloque de texto breve. ' +
+    'Ve directo al punto y termina con UNA pregunta corta que invite a avanzar (diagnóstico phygital gratuito). ' +
+    'Si preguntan por precios, menciona solo que existen 3 planes (Ecosistema Digital, Ecosistema Phygital y Phygital Enterprise), ' +
+    'no inventes cifras y deriva a WhatsApp https://wa.me/56937479835 o al formulario de contacto.' +
+    (siteContext
+      ? ' EXCEPCIÓN: el usuario compartió el link de su sitio web para que lo audites. En ese caso entrega un MINI DIAGNÓSTICO ' +
+        'con tres secciones en líneas separadas: "✅ Fortalezas" (1-2 puntos), "⚠️ Falencias" (2-3 puntos), "🚀 Oportunidades" (2-3 puntos). ' +
+        'Cada punto en una línea corta de máximo 12 palabras, empezando con "•". Cierra con UNA pregunta para agendar la auditoría phygital completa. ' +
+        'En este caso SÍ puedes usar viñetas. Basa el análisis EXCLUSIVAMENTE en el contenido recuperado del sitio; ' +
+        'si el contenido falló o quedó vacío, dilo en una frase y ofrece revisarlo manualmente por WhatsApp.'
+      : '');
+
   const systemInstruction = {
     role: 'user',
-    parts: [{
-      text: 'Eres el Agente Phy, asistente de la agencia Phygital: conectamos lo digital con lo físico ' +
-        '(tiendas Next.js, automatización agéntica, performance/Meta CAPI, IoT y domótica, contenido GenAI). ' +
-        'REGLA PRINCIPAL (innegociable): responde SIEMPRE en español con MÁXIMO 2 oraciones cortas, ' +
-        'sin superar 40 palabras en total. Cero relleno, cero introducciones, cero resúmenes finales. ' +
-        'Prohibido usar listas, viñetas, encabezados o varios párrafos: solo un bloque de texto breve. ' +
-        'Ve directo al punto y termina con UNA pregunta corta que invite a avanzar (diagnóstico phygital gratuito). ' +
-        'Si preguntan por precios, menciona solo que existen 3 planes (Ecosistema Digital, Ecosistema Phygital y Phygital Enterprise), ' +
-        'no inventes cifras y deriva a WhatsApp https://wa.me/56937479835 o al formulario de contacto.'
-    }]
+    parts: [{ text: systemText }]
   };
 
   const contents = [
@@ -41,7 +84,10 @@ export default async function handler(req, res) {
       role: h.role === 'assistant' || h.role === 'model' ? 'model' : 'user',
       parts: [{ text: (h.content || h.text || '').toString() }]
     })),
-    { role: 'user', parts: [{ text: message }] }
+    {
+      role: 'user',
+      parts: [{ text: siteContext ? `${message}\n\n[CONTENIDO RECUPERADO DEL SITIO]\n${siteContext}` : message }]
+    }
   ];
 
   try {
