@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chatWidget.setAttribute('aria-hidden', 'false');
     if (!chatMessages.dataset.started) {
       chatMessages.dataset.started = '1';
-      botSay('¡Hola! Soy el Agente Phy 🤖 Conecto lo digital con lo físico: e-commerce Next.js, automatización con IA en n8n, performance y IoT. ¿En qué puedo ayudarte?');
+      botSay('¡Hola! Soy el Agente Phy 🤖 vamos a revolucionar tu negocio: e-commerce Next.js, automatización con IA en n8n, performance y IoT. ¿En qué puedo ayudarte?');
     }
     chatInput.focus();
   }
@@ -255,13 +255,21 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userText, history: chatHistory })
       });
-      if (!res.ok) return null;
+      if (!res.ok) {
+        const errBody = await res.text().catch(() => '(sin detalle)');
+        console.warn(`[Agente Phy] /api/chat respondió ${res.status}: ${errBody}`);
+        return null;
+      }
       const data = await res.json();
       const text = data.reply || data.output || data.text;
-      if (!text) return null;
+      if (!text) {
+        console.warn('[Agente Phy] /api/chat respondió sin texto utilizable:', data);
+        return null;
+      }
       chatHistory.push({ role: 'model', text });
       return text.trim();
     } catch (e) {
+      console.warn('[Agente Phy] No se pudo contactar /api/chat (¿estás en local sin Vercel?):', e);
       return null;
     }
   }
@@ -269,7 +277,11 @@ document.addEventListener('DOMContentLoaded', () => {
   async function sendUser(text) {
     addBubble(text, 'user');
     const reply = await callAgent(text);
-    botSay(reply || agentReply(text));
+    if (!reply) {
+      botSay(agentReply(text) + '\n\n⚠️ (Respuesta offline: la API del agente no está disponible. Revisa la consola del navegador para ver el detalle.)');
+      return;
+    }
+    botSay(reply);
   }
 
   function handleSend() {
